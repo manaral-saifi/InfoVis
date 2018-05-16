@@ -1,3 +1,17 @@
+var d3 = d3 || {};
+
+const globalURI = "./data/spi_global_rankings.csv";
+
+/*Only works in firefox so far*/
+
+function parseToList(csvURI){
+    d3.csv(csvURI, function(data){
+        console.log(data);
+    });
+}
+
+parseToList(globalURI);
+
 var map = new ol.Map({
     target: 'map',
     layers: [
