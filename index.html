@@ -10,9 +10,15 @@
     <h1>Test-Map</h1>
     
     <div id="map" class="map"></div>
-    
+    <div>
+        <input id="address" type="textbox">
+        <input type="button" value="Encode" onclick="codeAddress()">
+    </div>
     <script src="./lib/d3/d3.js"></script>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCspuC-SUWwbSCkyDQaYigS94Z3v254MDg&callback=initMap">
+    </script>
     <script src="Soccer%20Map.js"></script>
 </body>
 </html> 
