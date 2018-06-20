@@ -10,6 +10,13 @@
     <h1>Test-Map</h1>
     
     <div id="map" class="map"></div>
+    <div style="display: none;">
+      <!-- Clickable label for Vienna -->
+      <a class="overlay" id="bayern" target="_blank" href="https://en.wikipedia.org/wiki/FC_Bayern_Munich#/media/File:FC_Bayern_M%C3%BCnchen_logo_(2017).svg">FC Bayern</a>
+      <div id="marker" title="Marker"></div>
+      <!-- Popup -->
+      <div id="popup" title="Welcome to OpenLayers"></div>
+    </div>
     <div>
         <input id="address" type="textbox">
         <input type="button" value="Encode" onclick="codeAddress()">
