@@ -12,13 +12,5 @@
         opacity: 0.5;
       }
 
-#bayern {
-        text-decoration: none;
-        color: white;
-        font-size: 11pt;
-        font-weight: bold;
-        text-shadow: black 0.1em 0.1em 0.2em;
-      }
-
 .popover-content {
         min-width: 180px;

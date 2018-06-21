@@ -10,22 +10,20 @@
     <h1>Test-Map</h1>
     
     <div id="map" class="map"></div>
-    <div style="display: none;">
-      <!-- Clickable label for Vienna -->
-      <a class="overlay" id="bayern" target="_blank" href="https://en.wikipedia.org/wiki/FC_Bayern_Munich#/media/File:FC_Bayern_M%C3%BCnchen_logo_(2017).svg">FC Bayern</a>
-      <div id="marker" title="Marker"></div>
-      <!-- Popup -->
-      <div id="popup" title="Welcome to OpenLayers"></div>
+    <div id="markers" style="display: none;">
+      <div id="marker"></div>
     </div>
     <div>
         <input id="address" type="textbox">
         <input type="button" value="Encode" onclick="codeAddress()">
     </div>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCspuC-SUWwbSCkyDQaYigS94Z3v254MDg">
+    </script>
     <script src="./lib/d3/d3.js"></script>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCspuC-SUWwbSCkyDQaYigS94Z3v254MDg&callback=initMap">
-    </script>
-    <script src="Soccer%20Map.js"></script>
+    <script src="RankingMap.js"></script>
+    <script src="TransferMap.js"></script>
+
 </body>
 </html> 
