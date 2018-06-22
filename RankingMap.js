@@ -1,6 +1,7 @@
 var d3 = d3 || {};
 
 const rankingURI = "./data/spi_global_rankings.csv";
+const logoURI = "./data/club_logos.csv"
 
   var lon, 
       lat,
@@ -36,9 +37,8 @@ function createMapWithMarkers(csvURI){
             i++;
                 
             if(((i*7) + 7) > 50){
-                
-                    window.clearInterval(intervalId);
-                
+                                
+                window.clearInterval(intervalId);
             }
                 
         }, 7500);
@@ -79,15 +79,26 @@ function initOpenLayersMap(lonLat){
 }
 
 function initCenterMarker(lonLat){
+         
+    var newDiv = document.createElement("div");
+    newDiv.setAttribute("id", 0);
+    newDiv.className = "marker";
+    
+    document.getElementById("markers").appendChild(newDiv);
     
     var pos = ol.proj.fromLonLat(lonLat),
+            
         marker = new ol.Overlay({
             position: pos,
             positioning: 'center-center',
-            element: document.getElementById('marker'),
-            stopEvent: false
+            element: document.getElementById(0),
+            stopEvent: false,
         });
-        
+    
+    d3.csv(logoURI, function(data){
+        document.getElementById(0).style.backgroundImage = "url('" + data[0].logopath + "')";
+    });
+    
     map.addOverlay(marker);
     
 }
@@ -102,11 +113,11 @@ function addNumberOfMarkers(list, forInit, forEnd){
                 
                 if(status == "OK"){
                     
-                    addAnotherMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f]);
+                    addAnotherMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f], i);
                        
                 } else if (status == "ZERO_RESULTS"){
                     
-                    handleZeroResultsError(list[i]);
+                    handleZeroResultsError(list[i], i);
                     
                 } else {
                     
@@ -118,25 +129,31 @@ function addNumberOfMarkers(list, forInit, forEnd){
     
 }
 
-function addAnotherMarker(lonLat){
+function addAnotherMarker(lonLat, id){
     
     var pos = ol.proj.fromLonLat(lonLat),
         newDiv = document.createElement("div");
     
-    newDiv.setAttribute("id", "marker");
-    document.querySelector("#markers").appendChild(newDiv);
+    newDiv.setAttribute("id", id);
+    newDiv.className = "marker";
+    
+    document.getElementById("markers").appendChild(newDiv);
     
     var marker = new ol.Overlay({
         position: pos,
         positioning: 'center-center',
-        element: document.querySelector("#markers").children[0],
+        element: document.getElementById(id),
         stopEvent: false
+    });
+    
+    d3.csv(logoURI, function(data){
+        document.getElementById(id).style.backgroundImage = "url('" + data[id].logopath + "')";
     });
     
     map.addOverlay(marker);
 }
 
-function handleZeroResultsError(listEntrant){
+function handleZeroResultsError(listEntrant, id){
     
     var currentAddress = listEntrant.name + " stadium";
     
@@ -144,7 +161,7 @@ function handleZeroResultsError(listEntrant){
         
         if(status == "OK"){
                     
-            addAnotherMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f]);
+            addAnotherMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f], id);
            
         } else {
                     

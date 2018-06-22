@@ -3,11 +3,11 @@
       width: 100%;
     }
 
-#marker {
-        width: 20px;
-        height: 20px;
-        border: 1px solid #088;
-        border-radius: 10px;
-        background-color: #0FF;
-        opacity: 0.5;
+.marker {
+        width: 35px;
+        height: 35px;
+        border-radius: 15px;
+        background-size: 20px;
+        background-repeat: no-repeat;
+        background-position: center;
       }
