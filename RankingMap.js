@@ -25,25 +25,24 @@ function createMapWithMarkers(csvURI){
         
         createMap(list[0]);
         
-        for(let i = 1; i < 50; i++){
-            
-            var currentAddress = list[i].name + " stadium " + list[i].league;
-            
-            geocoder = new google.maps.Geocoder();
-            
-            geocoder.geocode({'address': currentAddress}, function(results, status){
+        addNumberOfMarkers(list, 1, 8);
+        
+        var i = 1;
+        
+        var intervalId = window.setInterval(function(){
                 
-                if(status == "OK"){
-                    
-                    addAnotherMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f]);
-                    
-                } else {
-                    
-                    alert('Geocode was not successful for the following reason: ' + status);
+            addNumberOfMarkers(list, (i*7) + 1, (i*7) + 8);
+            
+            i++;
                 
-                }
-            });
-        }
+            if(((i*7) + 7) > 50){
+                
+                    window.clearInterval(intervalId);
+                
+            }
+                
+        }, 7500);
+        
     });
 }
 
@@ -74,7 +73,7 @@ function initOpenLayersMap(lonLat){
         view: new ol.View({
             center: ol.proj.fromLonLat(lonLat),
             zoom: 4
-        })
+        }),
     });
     
 }
@@ -90,6 +89,32 @@ function initCenterMarker(lonLat){
         });
         
     map.addOverlay(marker);
+    
+}
+
+function addNumberOfMarkers(list, forInit, forEnd){
+    
+    for(let i = forInit; i < forEnd; i++){
+            
+            var currentAddress = list[i].name + " stadium " + list[i].league;
+            
+            geocoder.geocode({'address': currentAddress}, function(results, status){
+                
+                if(status == "OK"){
+                    
+                    addAnotherMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f]);
+                       
+                } else if (status == "ZERO_RESULTS"){
+                    
+                    handleZeroResultsError(list[i]);
+                    
+                } else {
+                    
+                    alert('Geocode was not successful for the following reason: ' + status);
+                
+                }
+            });
+        }
     
 }
 
@@ -109,6 +134,26 @@ function addAnotherMarker(lonLat){
     });
     
     map.addOverlay(marker);
+}
+
+function handleZeroResultsError(listEntrant){
+    
+    var currentAddress = listEntrant.name + " stadium";
+    
+    geocoder.geocode({'address': currentAddress}, function(results, status){
+        
+        if(status == "OK"){
+                    
+            addAnotherMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f]);
+           
+        } else {
+                    
+            alert('Geocode was not successful for the following reason: ' + status);
+                
+        }
+        
+    });
+    
 }
 
 createMapWithMarkers(rankingURI);
