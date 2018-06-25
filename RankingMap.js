@@ -1,7 +1,8 @@
 var d3 = d3 || {};
 
 const rankingURI = "./data/spi_global_rankings.csv";
-const logoURI = "./data/club_logos.csv"
+const logoURI = "./data/club_logos.csv";
+const lonLatURI = "./data/club_lonlat.csv";
 
   var lon, 
       lat,
@@ -41,7 +42,7 @@ function createMapWithMarkers(csvURI){
                 window.clearInterval(intervalId);
             }
                 
-        }, 7500);
+        }, 1000);
         
     });
 }
@@ -49,16 +50,24 @@ function createMapWithMarkers(csvURI){
 function createMap(centrum) {
     
     var centerAddress = centrum.name + " stadium " + centrum.league;
+  
+    d3.csv(lonLatURI, function(data){
+            if(centrum.name == data[0].name){
+                initOpenLayersMap([data[0].lon,data[0].lat]);
+                initCenterMarker([data[0].lon,data[0].lat]);
+                console.log(data[0].lon, data[0].lat);
+            }
+    });
+    /*
+  geocoder = new google.maps.Geocoder();
     
-    geocoder = new google.maps.Geocoder();
-    
-    geocoder.geocode({'address': centerAddress}, function(results, status){
-        
+   geocoder.geocode({'address': centerAddress}, function(results, status){
         initOpenLayersMap([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f]);
         
         initCenterMarker([results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f]);
+        console.log(results[0].geometry.viewport.b.f, results[0].geometry.viewport.f.f);
 
-    });
+    });*/
 }
 
 function initOpenLayersMap(lonLat){
@@ -105,11 +114,17 @@ function initCenterMarker(lonLat){
 
 function addNumberOfMarkers(list, forInit, forEnd){
     
+       d3.csv(lonLatURI, function(data){
+            
+   
     for(let i = forInit; i < forEnd; i++){
             
-            var currentAddress = list[i].name + " stadium " + list[i].league;
+           // var currentAddress = list[i].name + " stadium " + list[i].league;
             
-            geocoder.geocode({'address': currentAddress}, function(results, status){
+       if(list[i].name == data[i].name){
+                addAnotherMarker([data[i].lon,data[i].lat],i);
+            }
+        /*    geocoder.geocode({'address': currentAddress}, function(results, status){
                 
                 if(status == "OK"){
                     
@@ -124,9 +139,9 @@ function addNumberOfMarkers(list, forInit, forEnd){
                     alert('Geocode was not successful for the following reason: ' + status);
                 
                 }
-            });
+            });*/
         }
-    
+     });
 }
 
 function addAnotherMarker(lonLat, id){
@@ -157,7 +172,7 @@ function handleZeroResultsError(listEntrant, id){
     
     var currentAddress = listEntrant.name + " stadium";
     
-    geocoder.geocode({'address': currentAddress}, function(results, status){
+  /*  geocoder.geocode({'address': currentAddress}, function(results, status){
         
         if(status == "OK"){
                     
@@ -169,7 +184,7 @@ function handleZeroResultsError(listEntrant, id){
                 
         }
         
-    });
+    });*/
     
 }
 
