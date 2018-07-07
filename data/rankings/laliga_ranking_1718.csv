@@ -1,4 +1,4 @@
-﻿place,team,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
+﻿place,name,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
 1,Barcelona,28,9,1,99,29,70,93,2.124168780291484,41.3822449802915
 2,Atletico Madrid,23,10,5,58,22,36,79,-3.5981184197084985,40.4375428802915
 3,Real Madrid,22,10,6,94,44,50,76,-3.686995519708489,40.4544030802915

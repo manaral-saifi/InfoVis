@@ -1,4 +1,4 @@
-﻿place,team,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
+﻿place,name,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
 1,Manchester City,32,4,2,106,27,79,100,-2.1990463197084864,53.48448708029151
 2,Manchester United,25,6,7,68,28,40,81,-2.290412519708525,53.4653447802915
 3,Tottenham Hotspur,23,8,7,74,36,38,77,-0.0650323197085072,51.6056345802915

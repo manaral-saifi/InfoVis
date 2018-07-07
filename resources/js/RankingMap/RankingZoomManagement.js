@@ -11,23 +11,42 @@ RankingMap.RankingZoomManagement = function(options) {
     }
     
     function addEventListeners(map){
+         buttonsList.querySelector("#top50").addEventListener("click", function(){
+            onMapClicked("top50");
+            showTop50(map);
+        });
         buttonsList.querySelector("#bundesliga").addEventListener("click", function(){
+            onMapClicked("bundesligaURI");
             showBundesliga(map);
         });
         buttonsList.querySelector("#laliga").addEventListener("click", function(){
+            onMapClicked("laligaURI");
             showLaLiga(map);
         });
         buttonsList.querySelector("#ligue1").addEventListener("click", function(){
+            onMapClicked("ligue1URI");
             showLigue1(map);
         });
         buttonsList.querySelector("#premierleague").addEventListener("click", function(){
+            onMapClicked("premierleagueURI");
             showPremierLeague(map);
         });
         buttonsList.querySelector("#seriea").addEventListener("click", function(){
+            onMapClicked("serieaURI");
             showSerieA(map);
         });
     }
+ 
+    function onMapClicked(uri){
+        RankingMap.createLeague(uri);
+    }
     
+    function showTop50(map){
+        var top50 = ol.proj.fromLonLat([11.62605618029147, 48.22014868029149]);
+        map.getView().animate(
+            {zoom: 5}, {center: top50}, {duration: 2000}
+        );
+    }
     function showBundesliga(map){
         var germany = ol.proj.fromLonLat([9.9167, 51.5167]);
         map.getView().animate(

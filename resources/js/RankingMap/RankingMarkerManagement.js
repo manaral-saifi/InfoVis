@@ -40,14 +40,14 @@ RankingMap.RankingMarkerManagement = function() {
            d3.csv(lonLatURI, function(data){
                for(let i = 1; i < 50; i++){
                    if(list[i].name == data[i].name){
-                       addAnotherMarker(map, [Number(data[i].lon),Number(data[i].lat)],data[i].name,i);
+                       addAnotherMarker(map, [Number(data[i].lon),Number(data[i].lat)],data[i].name,i,rankingURI);
                    }
                }
            });
 
     }
 
-    function addAnotherMarker(map, lonLat, id, place){
+    function addAnotherMarker(map, lonLat, id, place, uri){
 
         var pos = ol.proj.fromLonLat(lonLat),
             newDiv = document.createElement("div");
@@ -63,7 +63,7 @@ RankingMap.RankingMarkerManagement = function() {
             stopEvent: false
         });
 
-        d3.csv(rankingURI, function(data){
+        d3.csv(uri, function(data){
             document.getElementById(id).style.backgroundImage = "url('./images/" + data[place].name + ".png')"; 
         });
 

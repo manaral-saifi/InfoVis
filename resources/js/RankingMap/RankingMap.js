@@ -12,18 +12,20 @@ var RankingMap = (function(){
     const lonLatURI = "./data/club_lonlat.csv";
     const rankingURI = "./data/spi_global_rankings.csv";
 
-    
-    const bundesligaURI = "./data/rankings/bundesliga_ranking_1718.csv";
-    const premierleagueURI = "./data/rankings/premierleague_ranking_1718.csv";
-    const serieaURI = "./data/rankings/seriea_ranking_1718.csv";
-    const ligue1URI = "./data/rankings/ligue1_ranking_1718.csv";
-    const laligaURI = "./data/rankings/laliga_ranking_1718.csv";
+    var myUri = {
+        bundesligaURI : "./data/rankings/bundesliga_ranking_1718.csv",
+        premierleagueURI : "./data/rankings/premierleague_ranking_1718.csv",
+        serieaURI : "./data/rankings/seriea_ranking_1718.csv",
+        ligue1URI : "./data/rankings/ligue1_ranking_1718.csv",
+        laligaURI : "./data/rankings/laliga_ranking_1718.csv"
+    };
 
     function init(){
         initRankingPopUp();
         initRankingZoomManagement();
         initRankingMarkerManagement();
         createMapWithMarkers();
+        createLeague();
     }
     
     function createMapWithMarkers(){
@@ -37,7 +39,6 @@ var RankingMap = (function(){
             }
             createMap(list);
         });
-        
     }
     
     function createMap(list) {
@@ -49,6 +50,19 @@ var RankingMap = (function(){
             }
         });
     }
+    
+    function createLeague(uri){
+        
+            if(myUri.hasOwnProperty(uri)){
+                d3.csv(myUri[uri],function(data){
+                    for(let i = 0; i < data.length; i++){
+                        rankingMarkerManagement.addAnotherMarker(map,[Number(data[i].lon),Number(data[i].lat)],data[i].name,i,myUri[uri]);
+                    }
+                });  
+            }
+        
+    }
+    
 
     function initMap(lonLat){
         var vectorLayer = new ol.layer.Vector({
@@ -89,6 +103,7 @@ var RankingMap = (function(){
     }
     
     that.init = init;
+    that.createLeague = createLeague;
     
     return that;
     

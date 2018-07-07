@@ -1,4 +1,4 @@
-﻿place,team,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
+﻿place,name,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
 1,Juventus,30,5,3,86,24,62,95,7.64261338029155,45.1109179802915
 2,Napoli,28,7,3,77,29,48,91,14.194410080291505,40.8292854802915
 3,AS Roma,23,8,7,61,28,33,77,12.456073980291535,41.93542598029149
