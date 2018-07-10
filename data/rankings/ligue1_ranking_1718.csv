@@ -1,4 +1,4 @@
-﻿place,team,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
+﻿place,name,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
 1,Paris Saint-Germain,29,6,3,108,29,79,93,2.254397680291504,48.84278458029149
 2,AS Monaco,24,8,6,85,45,40,80,7.415496,43.7384176
 3,Lyon,23,9,6,87,43,44,78,4.983377980291493,45.76664398029149

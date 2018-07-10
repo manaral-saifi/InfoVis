@@ -1,4 +1,4 @@
-﻿place,team,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
+﻿place,name,wins,draws,losses,goals,conceded,goaldif,points,lon,lat
 1,Bayern Munich,27,3,4,92,28,64,84,11.62605618029147,48.22014868029149
 2,Schalke 04,18,9,7,53,37,16,63,7.06887518029157,51.5559798802915
 3,TSG Hoffenheim,15,10,9,66,48,18,55,8.887690180291543,49.23999038029151

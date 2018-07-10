@@ -7,8 +7,16 @@
 </head>
     
 <body>
-    <h1>Test-Map</h1>
+    <h1 >World of SPI</h1>
+    <h2 >Soccer Power Index</h2>
     
+    <p class="spi">Der SPI, kurz für Soccer Power Index, ist ein Rating-Schema des ESPN für Nationalmannschaften und Vereine. Er soll auf  effektivsten Wege die aktuelle Leistungsfähigkeit und das aktuelle Können der Mannschaften anhand eines eindeutig kalkulierten Ratings preisgeben. 
+    Der SPI orientiert sich nicht nur an den Ergebnissen der Vergangenheit, wie es beispielsweise das prominenteste Mannschafts-Rating, das der FIFA, tut. Stattdessen versucht er die einzelnen Ratings so vorrausschauend und vorhersagend wie möglich zu errechnen. 
+    Der Soccer Power Index ist also darauf ausgelegt zu prognostizieren, welche Teams in Zukunft den meisten Erfolg haben werden, wobei er weniger den Erfolg der Teams in der Vergangenheit berücksichtigt.
+    Nebenbei werden noch Ratings für die aktuelle Offensiv- und Defensivleistung prognostiziert. Gedacht sind sie als Werte gegen die durchschnittlichste Abwehr und den durchschnittlichsten Angriff der Liga.
+    Hat Real Madrid also ein Offensiv-Rating von 3.0, dann treffen sie gegen ein durchschnittliches La Liga Team (Tabellenmitte) dreimal. 
+    Ist das Defensiv-Rating bei 1.0, so würden sie gegen den durchschnittlichsten Angriff ein Tor kassieren.</p>
+
     <div id="map" class="map"></div>
     <div id="markers" style="display: none;">
         
@@ -18,12 +26,32 @@
       <div id="popup-content"></div>
     </div>
     <ul id="buttons">
+        <button id="top50" type="button">Top 50</button>
         <button id="bundesliga" type="button">Bundesliga</button>
         <button id="laliga" type="button">La Liga</button>
         <button id="ligue1" type="button">Ligue 1</button>
         <button id="premierleague" type="button">Premier League</button>
         <button id="seriea" type="button">Serie A</button>
     </ul>
+    
+    <div id="info-list">
+        <div class="ranking">
+            <h3>Champion's League isn't everything</h3>
+            <p>Eine weitere historische Saison endete mit dem 30.06.2018, in der sich Real Madrid endgültig die europäische Krone aufsetzen durfte mit dem dritten Champion's League Titel in Folge. Mit einem 3-1 Erfolg über den FC Liverpool durch einen Doppelpack des eingewechselten Man of the Match Gareth Bale setzten sich die Königlichen einmal mehr gegen formstarke Klopp-Schützlinge durch und triumphierten.
+            Wirft man allerdings einen Blick auf das das Soccer Power Index Rating von ESPN, findet man Real Madrid nur auf Rang 2 hinter dem FC Bayern München. Der FC Bayern München, den sie noch so glanzlos im Halbfinale bezwingen konnten. Der FC Liverpool findet sich nur auf Rang 5 wieder.
+            Davor finden sich auch noch Manchester City und der FC Barcelona, die nicht über das Viertelfinale des wichtigsten europäischen Wettbewerbs hinauskamen, auf Rang 3 und 4.
+            Stützt man sich lediglich auf die Resultate der Königsklasse, ist dieses Ranking durchaus verwunderlich. Betrachtet man jedoch die Leistungen in den nationalen Wettbewerben und die Faktoren, die beim Generieren des SPI Rankings eine Rolle spielen, dann ergibt das Ranking plötzlich einen Sinn.
+            Den Bayern blieb zwar der Gewinn des nationalen Pokals im Finalspiel verwehrt, jedoch konnten sie, im Gegensatz zu den Champion's League Finalisten, den nationalen Liga-Titel holen. Und das mit einer Souveränität, die sonst nur Manchester City in der Premier League an den Tag legen konnte. Als erste Mannschaft mit 100 Punkten zu Saisonende der ersten englischen Liga stellte die Truppe um Pep Guardiola einen bahnbrechenden Rekord auf. Real Madrid hingegen konnte in der spanischen Liga nur den dritten Rang ergattern und das 17 Punkte hinter dem Meister Barcelona. Liverpool landete in England auf der 4 mit einem satten 25 Punkte Abstand zum Führenden. Die Meister aus Frankreich und Italien finden sich im SPI Ranking auf den Rängen 6 und 7. Diese Titel gingen an Paris Saint-Germain mit guten 13 Punkten Vorsprung und an Juventus Turin, die mit 4 Punkten vor dem SSC Neapel (SPI Rank 11) den "schwächsten Meister" der Top 5 Ligen abgeben.</p>
+        </div>
+        <div class="transfer hidden">
+            <h3>KEK</h3>
+            <p>KEK</p>
+        </div>
+        <div class="investor hidden">
+            <h3>KEK</h3>
+            <p>KEK</p>
+        </div>
+    </div>
     
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCspuC-SUWwbSCkyDQaYigS94Z3v254MDg">
