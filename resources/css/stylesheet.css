@@ -4,14 +4,30 @@ body {
     height: 100%;
 }
 
+h1,
+h2 {
+    font-family: cursive;
+    text-align: center;
+}
+
+h3 {
+    font-style: italic;
+    text-align: center;
+}
+
+.spi {
+    font-size: 130%;
+    font-family: fantasy;
+}
+
 .map {
     height: 800px;
     width: 100%;
 }
 
 .marker {
-    width: 35px;
-    height: 35px;
+    width: 33px;
+    height: 33px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -19,7 +35,7 @@ body {
 
 .ol-popup {
     position: absolute;
-    background-color: white;
+    background-color: yellow;
     -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
     filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
     padding: 15px;
@@ -63,4 +79,9 @@ body {
       
 .ol-popup-closer:after {
     content: "✖";
+}
+
+.hidden {
+    display: none;
+    opacity: 0;
 }

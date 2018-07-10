@@ -7,8 +7,9 @@ var RankingMap = (function(){
         map,
         rankingPopUp,
         rankingZoomManagement,
-        rankingMarkerManagement;
-        
+        rankingMarkerManagement,
+        markersDOMlist;
+    
     const lonLatURI = "./data/club_lonlat.csv";
     const rankingURI = "./data/spi_global_rankings.csv";
 
@@ -25,7 +26,6 @@ var RankingMap = (function(){
         initRankingZoomManagement();
         initRankingMarkerManagement();
         createMapWithMarkers();
-        createLeague();
     }
     
     function createMapWithMarkers(){
@@ -46,21 +46,51 @@ var RankingMap = (function(){
             if(list[0].name == data[0].name){
                 initMap([Number(data[0].lon),Number(data[0].lat)]);
                 rankingMarkerManagement.initCenterMarker(map, [Number(data[0].lon),Number(data[0].lat)]);
+                markersDOMlist = document.querySelector(".map").children[0].children[1];
                 rankingMarkerManagement.addEuropeMarkers(map, list);
+                rankingPopUp.initPopUps(map, markersDOMlist, myUri);
+                rankingMarkerManagement.attachMarkerListeners(markersDOMlist);
             }
         });
     }
     
     function createLeague(uri){
-        
-            if(myUri.hasOwnProperty(uri)){
-                d3.csv(myUri[uri],function(data){
-                    for(let i = 0; i < data.length; i++){
-                        rankingMarkerManagement.addAnotherMarker(map,[Number(data[i].lon),Number(data[i].lat)],data[i].name,i,myUri[uri]);
+        rankingZoomManagement.resetMarkerSizes(markersDOMlist);
+        if(myUri.hasOwnProperty(uri)){
+            d3.csv(myUri[uri],function(data){
+                var clubNames = [];
+                for(let i = 0; i < data.length; i++){
+                    clubNames.push(data[i].name);
+                    rankingMarkerManagement.addAnotherMarker(map,[Number(data[i].lon),Number(data[i].lat)],data[i].name,i,myUri[uri]);
+                }
+                for(let i = 0; i < markersDOMlist.childElementCount; i++){
+                    if(clubNames.indexOf(markersDOMlist.children[i].firstChild.getAttribute("id")) == -1){
+                        markersDOMlist.children[i].classList.add("hidden");
+                    } else if (markersDOMlist.children[i].classList.contains("hidden")){
+                        markersDOMlist.children[i].classList.remove("hidden");
                     }
-                });  
-            }
-        
+                }
+                rankingZoomManagement.setMarkerSizesByLeagueRank(myUri[uri], markersDOMlist);
+            });  
+        }
+
+    }
+    
+    function returnToTop50(){
+        rankingZoomManagement.resetMarkerSizes(markersDOMlist);
+            d3.csv(rankingURI, function(data){
+                var clubNames = [];
+                for(let i = 0; i < 50; i++){
+                    clubNames.push(data[i].name);
+                }
+                for(let i = 0; i < markersDOMlist.childElementCount; i++){
+                    if(clubNames.indexOf(markersDOMlist.children[i].firstChild.getAttribute("id")) == -1){
+                        markersDOMlist.children[i].classList.add("hidden");
+                    } else if (markersDOMlist.children[i].classList.contains("hidden")){
+                        markersDOMlist.children[i].classList.remove("hidden");
+                    }
+                }
+            });
     }
     
 
@@ -78,9 +108,17 @@ var RankingMap = (function(){
                 center: ol.proj.fromLonLat(lonLat),
                 zoom: 5
             }),
-            overlays: [rankingPopUp.getPopUpOverlay()]
+            overlays: [rankingPopUp.getPopUpOverlay()],
+            interactions: new ol.interaction.defaults({
+                doubleClickZoom :false,
+                dragAndDrop: false,
+                keyboardPan: false,
+                keyboardZoom: false,
+                mouseWheelZoom: false,
+                pointer: false,
+                select: false
+            })
         });
-        rankingPopUp.initPopUps(map);
         rankingZoomManagement.addEventListeners(map);
     
     }
@@ -104,6 +142,7 @@ var RankingMap = (function(){
     
     that.init = init;
     that.createLeague = createLeague;
+    that.returnToTop50 = returnToTop50;
     
     return that;
     
