@@ -1,18 +1,49 @@
 var d3 = d3 || {};
 
-RankingMap.TransferMap = function(){
+TransferMap = (function(){
 
     const transfersURI = "./data/transfers_test.csv",
           translationURI = "./data/country_translation.csv";
     
     var that = {},
-        vectorArray;
+        vectorArray,
+        transferMap,
+        toSelected = false;
     
     function init(){
+        initMap();
         return that;
     }
     
-    function parseToList(map){
+    function initMap(){
+        var vectorLayer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                url: 'https://openlayers.org/en/v4.6.5/examples/data/geojson/countries.geojson',
+                format: new ol.format.GeoJSON()
+            }),
+        });
+        transferMap = new ol.Map({
+            target: 'transferMap',
+            layers: [vectorLayer],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([11.62605618029147, 48.22014868029149]),
+                zoom: 4.6
+            }),
+            interactions: new ol.interaction.defaults({
+                doubleClickZoom :false,
+                dragAndDrop: false,
+                keyboardPan: false,
+                keyboardZoom: false,
+                mouseWheelZoom: false,
+                pointer: false,
+                select: false
+            })
+        });
+        document.querySelector("#transferMap").classList.add("hidden");
+        initTransferVisualization();
+    }
+    
+    function initTransferVisualization(){
         d3.csv(transfersURI, function(data){
             var list = [];
             for(let i = 0; i < data.length; i++){
@@ -27,46 +58,86 @@ RankingMap.TransferMap = function(){
                 preparedFromCountList = prepareCountList(countListFrom),
                 countListTo = createToCountList(list),
                 preparedToCountList = prepareCountList(countListTo);
-            createTransferVector(preparedFromCountList, map);
-            console.log(preparedFromCountList)
+            createTransferVector(preparedFromCountList);
+            setButtonListeners(preparedFromCountList, preparedToCountList);
         });
     }
     
-    function createTransferVector(countList, map){
-        d3.csv(translationURI, function(data){
-            var translatedArray = [];
-            for(let i = 0; i < countList.length; i++){
-                for(let j = 0; j < data.length; j++){
-                    if(data[j].german == countList[i].country){
-                        translatedArray.push({"country":data[j].english,"count":countList[i].count});
-                    }
-                }
-            }
-            translatedArray = getDoublesOut(translatedArray);
-            console.log(translatedArray)
-            vectorArray = [];
-            for(let i = 0; i < translatedArray.length; i++){
-            var vector = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    format: new ol.format.GeoJSON(),
-                    url: 'https://openlayers.org/en/v4.6.5/examples/data/geojson/countries.geojson'
-                }),
-                style: function(feature, res){
-                    if(feature.get("name") == translatedArray[i].country){
-                        return new ol.style.Style({
-                            fill: new ol.style.Fill({
-                                color: [translatedArray[i].count,0,0,1],
-                            })
-                        });
-                    }
-                }
-            });
-                vectorArray.push(vector);
-            }
-            for(let i = 0; i < vectorArray.length; i++){
-                map.addLayer(vectorArray[i]);
+    function setButtonListeners(preparedFromCountList, preparedToCountList){
+        document.querySelector("#transferButtons").addEventListener("click", function(event){
+            if(event.target.getAttribute("id") == "fromButton" && toSelected){
+                handleFromButtonPressed(preparedFromCountList);
+            } else if(event.target.getAttribute("id") == "toButton" && !toSelected){
+                handleToButtonPressed(preparedToCountList);
+
             }
         });
+    }
+    
+    function handleFromButtonPressed(preparedFromCountList){
+        toSelected = false;
+        document.querySelector("#toButton").classList.remove("chosen");
+        document.querySelector("#fromButton").classList.add("chosen");
+        for(let i = 0; i < vectorArray.length; i++){
+            transferMap.removeLayer(vectorArray[i]);
+        }
+        createTransferVector(preparedFromCountList);
+    }
+    
+    function handleToButtonPressed(preparedToCountList){
+        toSelected = true;
+        document.querySelector("#fromButton").classList.remove("chosen");
+        document.querySelector("#toButton").classList.add("chosen");
+        for(let i = 0; i < vectorArray.length; i++){
+            transferMap.removeLayer(vectorArray[i]);
+        }
+        createTransferVector(preparedToCountList);
+    }
+    
+    function createTransferVector(countList){
+        d3.csv(translationURI, function(data){
+            var translatedArray = [];
+            translatedArray = getTranslatedArray(countList, data);
+            fillVectorArray(translatedArray);
+            for(let i = 0; i < vectorArray.length; i++){
+                transferMap.addLayer(vectorArray[i]);
+            }
+        });
+    }
+    
+    function fillVectorArray(translatedArray){
+        vectorArray = [];
+        for(let i = 0; i < translatedArray.length; i++){
+        var vector = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                format: new ol.format.GeoJSON(),
+                url: 'https://openlayers.org/en/v4.6.5/examples/data/geojson/countries.geojson'
+            }),
+            style: function(feature, res){
+                if(feature.get("name") == translatedArray[i].country){
+                    return new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: [translatedArray[i].count,0,0,0.7],
+                        })
+                    });
+                }
+            }
+        });
+            vectorArray.push(vector);
+        }
+    }
+    
+    function getTranslatedArray(countList, data){
+        var translatedArray = [];
+        for(let i = 0; i < countList.length; i++){
+            for(let j = 0; j < data.length; j++){
+                if(data[j].german == countList[i].country){
+                    translatedArray.push({"country":data[j].english,"count":countList[i].count});
+                }
+            }
+        }
+        translatedArray = getDoublesOut(translatedArray);
+        return translatedArray;
     }
     
     function getDoublesOut(translatedArray){
@@ -141,8 +212,7 @@ RankingMap.TransferMap = function(){
     }
     
     that.init = init;
-    that.parseToList = parseToList;
     
     return that;
     
-};
+}());

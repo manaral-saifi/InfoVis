@@ -32,6 +32,12 @@ footer {
     background-color: lightslategray;
 }
 
+.transferMap {
+    height: 800px;
+    width: 100%;
+    background-color: lightslategray;
+}
+
 .marker {
     width: 33px;
     height: 33px;
@@ -93,6 +99,11 @@ footer {
     opacity: 0;
 }
 
+.chosen {
+    background-color: black;
+    color: white;
+}
+
 #bundesliga {
     background-color: red;
     color: gold;
@@ -128,19 +139,19 @@ footer {
     color: white;
 }
 
-#rankingMap {
+#rankingMapSwitch {
     height: 40px;
     width: 380px;
     background-color: lightslategray;
 }
 
-#transferMap {
+#transferMapSwitch {
     height: 40px;
     width: 380px;    
     background-color: lightslategray;
 }
 
-#investorMap {
+#investorMapSwitch {
     height: 40px;
     width: 380px;
     background-color: lightslategray;
