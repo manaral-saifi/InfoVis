@@ -54,7 +54,17 @@ SwitchCommands = (function(){
     }
     
     function handleInvestorChange(){
-        
+        rankingMapDOM.classList.add("hidden");
+        transferMapDOM.classList.add("hidden");
+        rankingButtonsDOM.classList.add("hidden");
+        transferButtonsDOM.classList.add("hidden");
+        investorMapDOM.classList.remove("hidden");
+         if(investorText.classList.contains("hidden")){
+            rankingText.classList.add("hidden");
+        } else {
+             transferText.classList.add("hidden");
+        }
+        investorText.classList.remove("hidden");
     }
     
     that.init = init;

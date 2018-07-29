@@ -38,6 +38,12 @@ footer {
     background-color: lightslategray;
 }
 
+.investorMap {
+    height: 800px;
+    width: 100%;
+    background-color: lightslategray;
+}
+
 .marker {
     width: 33px;
     height: 33px;
