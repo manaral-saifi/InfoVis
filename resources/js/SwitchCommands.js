@@ -2,6 +2,7 @@ SwitchCommands = (function(){
 
     const rankingMapDOM = document.querySelector("#map"),
           transferMapDOM = document.querySelector("#transferMap"),
+          investorMapDOM = document.querySelector("#investorMap")
           rankingButtonsDOM = document.querySelector("#buttons"),
           transferButtonsDOM = document.querySelector("#transferButtons"),
           rankingText = document.querySelector(".ranking"),
