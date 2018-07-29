@@ -33,6 +33,7 @@ SwitchCommands = (function(){
         transferMapDOM.classList.add("hidden");                
         rankingButtonsDOM.classList.remove("hidden");
         transferButtonsDOM.classList.add("hidden");
+        investorMapDOM.classList.add("hidden");
         if(investorText.classList.contains("hidden")){
             transferText.classList.add("hidden");
         } else {
@@ -46,6 +47,7 @@ SwitchCommands = (function(){
         transferMapDOM.classList.remove("hidden");
         rankingButtonsDOM.classList.add("hidden");
         transferButtonsDOM.classList.remove("hidden");
+        investorMapDOM.classList.add("hidden");
         if(investorText.classList.contains("hidden")){
             rankingText.classList.add("hidden");
         } else {
@@ -60,7 +62,7 @@ SwitchCommands = (function(){
         rankingButtonsDOM.classList.add("hidden");
         transferButtonsDOM.classList.add("hidden");
         investorMapDOM.classList.remove("hidden");
-         if(investorText.classList.contains("hidden")){
+         if(transferText.classList.contains("hidden")){
             rankingText.classList.add("hidden");
         } else {
              transferText.classList.add("hidden");
