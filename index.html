@@ -17,6 +17,12 @@
     Hat Real Madrid also ein Offensiv-Rating von 3.0, dann treffen sie gegen ein durchschnittliches La Liga Team (Tabellenmitte) dreimal. 
     Ist das Defensiv-Rating bei 1.0, so würden sie gegen den durchschnittlichsten Angriff ein Tor kassieren.</p>
 
+    <ul id="switchCommands" align="center">
+        <button id="rankingMapSwitch" type="button">Rankings</button>
+        <button id="transferMapSwitch" type="button">Transferstatistiken</button>
+        <button id="investorMapSwitch" type="button">Investoren Power</button>
+    </ul>
+    
     <div id="map" class="map"></div>
     <div id="markers" style="display: none;">
         
@@ -25,13 +31,21 @@
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <div id="popup-content"></div>
     </div>
-    <ul id="buttons">
+    
+    <div id="transferMap" class="transferMap"></div>
+
+    <ul id="buttons" align="center">
         <button id="top50" type="button">Top 50</button>
         <button id="bundesliga" type="button">Bundesliga</button>
         <button id="laliga" type="button">La Liga</button>
         <button id="ligue1" type="button">Ligue 1</button>
         <button id="premierleague" type="button">Premier League</button>
         <button id="seriea" type="button">Serie A</button>
+    </ul>
+    
+    <ul id="transferButtons" align="center" class="hidden">
+        <button id="fromButton" type="button" class="chosen">Abgänge</button>
+        <button id="toButton" type="button">Zugänge</button>
     </ul>
     
     <div id="info-list">
@@ -44,14 +58,24 @@
             Den Bayern blieb zwar der Gewinn des nationalen Pokals im Finalspiel verwehrt, jedoch konnten sie, im Gegensatz zu den Champion's League Finalisten, den nationalen Liga-Titel holen. Und das mit einer Souveränität, die sonst nur Manchester City in der Premier League an den Tag legen konnte. Als erste Mannschaft mit 100 Punkten zu Saisonende der ersten englischen Liga stellte die Truppe um Pep Guardiola einen bahnbrechenden Rekord auf. Real Madrid hingegen konnte in der spanischen Liga nur den dritten Rang ergattern und das 17 Punkte hinter dem Meister Barcelona. Liverpool landete in England auf der 4 mit einem satten 25 Punkte Abstand zum Führenden. Die Meister aus Frankreich und Italien finden sich im SPI Ranking auf den Rängen 6 und 7. Diese Titel gingen an Paris Saint-Germain mit guten 13 Punkten Vorsprung und an Juventus Turin, die mit 4 Punkten vor dem SSC Neapel (SPI Rank 11) den "schwächsten Meister" der Top 5 Ligen abgeben.</p>
         </div>
         <div class="transfer hidden">
-            <h3>KEK</h3>
-            <p>KEK</p>
+            <h3>Das Jahr der Transfer-Rekorde</h3>
+            <p>"Fußball entwickelt sich immer mehr zum Menschenhandel." Der Weltsportart Fußball so den Stempel der Modernen Sklaverei aufzudrücken, wirkt zunächst übertrieben. Nach näherer Betrachtung der Transfergeschehnisse der vergangenen Saison ist es jedoch nachvollziehbar, wie Gedanken über dieses Statement aufkommen konnten.
+            Natürlich ist die Kritik an Millionen-Transfers nichts neues, nichtsdestotrotz hat der Kaufwahnsinn der abgelaufenen Saison neue Rekorde aufgestellt. Gleich vier Transfers setzten sich mit ihren Kaufbeträgen an der Spitze der Liste der höchsten Transfersummen aller Zeiten ab.
+            Unangefochtener Spitzenreiter seit Sommer 2017 ist der brasilianische Star-Stürmer Neymar, der den FC Barcelona in Richtung Paris Saint-Germain für sage und schreibe 222 Millionen Euro verlassen hat. Die geldlichen Argumente schienen ihn überzeugt zu haben bei dem weltweit doch weniger angesehenen Club zu unterschreiben. Fortan verdient Neymar nämlich rund 36 Millionen Euro jährlich.
+            Platz 2 der höchsten Ablösesummen der Fußballgeschichte geht an den zu diesem Zeitpunkt noch 18 jährigen, französischen Youngster Kylian Mbappé. Für 160 Millionen Euro wechselt auch er für ein Gehalt von 17 Millionen Euro im Jahr zu den Parisern. Zunächst war er ausgeliehen, weswegen seine Transfersumme erst zum Ende der Saison anfiel. Bezieht man diese noch mit ein, hat in der abgelaufenen Saison kein Team so viel Geld für Spieler ausgegeben wie Paris Saint-Germain. Das große Ziel des Champions League Sieges wurde jedoch weit verfehlt. Trotz der Rekord-Investitionen gab es im Achtelfinale bereits das Aus.
+            Den dritthöchsten Transfer der Geschichte tätigte der FC Barcelona, die im Januar dieses Jahres den Coup mit Liverpool's Philippe Coutinho perfekt machten. 120 Millionen Euro mussten die Spanier den Engländern zukommen lassen und künftig haben sie dem brasilianischen Topspieler ein Gehalt von knapp 14  Millionen Euro im Jahr zu zahlen. Damit schloß Barcelona immerhin den teuersten Transfer ihrer Vereinsgeschichte und dazu noch den teuersten der La Liga Geschichte ab.
+            Für 105 Millionen konnten sie sich dann auch noch Ousmane Dembélé von Borussia Dortmund sichern. Dieser könnte sich "Teuerster Spieler aller Zeiten" nennen, gäbe es die drei zuvor genannten Spieler nicht. Immerhin kann er sich aber nicht nur auf ein Engagement beim FC Barcelona freuen, sondern zusätzlich noch auf 12 Millionen Euro Jahresgehalt.
+            Die Zeiten ändern sich rapide, solche Transfersummen werden in ein paar Jahren keine Ausnahme, sondern die Regel sein. In den 70er Jahren zahlte der FC Barcelona für den Wechsel des legendären Johan Cruyff umgerechnet rund 1,9 Millionen Euro und tätigte 1973 damit den bis dato teuersten Transfer der Geschichte. Solche Transfersummen treten heutzutage nur noch in den zweiten Spielklassen der europäischen Topligen auf.</p>
         </div>
         <div class="investor hidden">
             <h3>KEK</h3>
             <p>KEK</p>
         </div>
     </div>
+    
+    <footer align="center">
+        © Al-Saifi, Bunzel, Lindemann
+    </footer>
     
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCspuC-SUWwbSCkyDQaYigS94Z3v254MDg">
@@ -64,7 +88,10 @@
     <script src="./resources/js/RankingMap/RankingMarkerManagement.js"></script>
     <script src="./resources/js/RankingMap/RankingZoomManagement.js"></script>
     <script src="./resources/js/TransferMap/TransferMap.js"></script>
+    <script src="./resources/js/SwitchCommands.js"></script>
     <script>RankingMap.init()</script>
+    <script>TransferMap.init()</script>
+    <script>SwitchCommands.init()</script>
 
 </body>
 </html> 

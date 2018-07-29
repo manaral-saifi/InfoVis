@@ -1,6 +1,6 @@
 html, 
 body {
-    background-color: slategrey;
+    background-color: papayawhip;
     height: 100%;
 }
 
@@ -15,6 +15,12 @@ h3 {
     text-align: center;
 }
 
+footer {
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+
 .spi {
     font-size: 130%;
     font-family: fantasy;
@@ -23,6 +29,13 @@ h3 {
 .map {
     height: 800px;
     width: 100%;
+    background-color: lightslategray;
+}
+
+.transferMap {
+    height: 800px;
+    width: 100%;
+    background-color: lightslategray;
 }
 
 .marker {
@@ -84,4 +97,62 @@ h3 {
 .hidden {
     display: none;
     opacity: 0;
+}
+
+.chosen {
+    background-color: black;
+    color: white;
+}
+
+#bundesliga {
+    background-color: red;
+    color: gold;
+    border-color: black;
+}
+
+#ligue1 {
+    background-color: white;
+    color: red;
+    border-color: blue;
+}
+
+#laliga {
+    background-color: yellow;
+    color: red;
+    border-color: red;
+}
+
+#seriea {
+    background-color: white;
+    color: red;
+    border-color: green;
+}
+
+#premierleague {
+    background-color: blue;
+    color: white;
+    border-color: red;
+}
+
+#top50 {
+    background-color: black;
+    color: white;
+}
+
+#rankingMapSwitch {
+    height: 40px;
+    width: 380px;
+    background-color: lightslategray;
+}
+
+#transferMapSwitch {
+    height: 40px;
+    width: 380px;    
+    background-color: lightslategray;
+}
+
+#investorMapSwitch {
+    height: 40px;
+    width: 380px;
+    background-color: lightslategray;
 }
