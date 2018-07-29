@@ -36,7 +36,7 @@ InvestorMap.InvestorMarkerManagement = function() {
             document.getElementById(europeNumberOne).style.backgroundImage = "url('./images/" + data[0].name + ".png')";
         });
     
-        investorMap.addOverlay(marker);
+        map.addOverlay(marker);
     
     }
 
@@ -72,7 +72,7 @@ InvestorMap.InvestorMarkerManagement = function() {
                 document.getElementById(id).style.backgroundImage = "url('./images/" + data[place].name + ".png')"; 
             });
 
-            investorMap.addOverlay(marker);
+            map.addOverlay(marker);
         }
     }
     

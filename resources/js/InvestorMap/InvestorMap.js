@@ -5,12 +5,14 @@ var InvestorMap = (function(){
 
     var that = {},
         investorMap,
+        selectedWidth,
         investorMarkerManagement,
         markersDOMlist;
     
-    const lonLatURI = "./data/club_lonlat.csv";
     const investorsURI = "./data/club_investors.csv"
+    const lonLatURI = "./data/club_lonlat.csv"
     const rankingURI = "./data/spi_global_rankings.csv";
+    const connectionURI = "./data/connection_lonlat.csv"
     
     function init(){
         initInvestorMarkerManagement()
@@ -34,9 +36,9 @@ function createMapWithMarkers(){
         d3.csv(lonLatURI, function(data){
             if(list[0].name == data[0].name){
                 initMap([Number(data[0].lon),Number(data[0].lat)]);
-                investorMarkerManagement.initCenterMarker(map, [Number(data[0].lon),Number(data[0].lat)]);
+                investorMarkerManagement.initCenterMarker(investorMap, [Number(data[0].lon),Number(data[0].lat)]);
                 markersDOMlist = document.querySelector(".investorMap").children[0].children[1];
-                investorMarkerManagement.addEuropeMarkers(map, list);
+                investorMarkerManagement.addEuropeMarkers(investorMap, list);
                 investorMarkerManagement.attachMarkerListeners(markersDOMlist);
             }
         });
@@ -54,7 +56,7 @@ function createMapWithMarkers(){
             layers: [vectorLayer],
             view: new ol.View({
                 center: ol.proj.fromLonLat(lonLat),
-                zoom: 5
+                zoom: 2.5
             }),
             interactions: new ol.interaction.defaults({
                 doubleClickZoom :false,
@@ -67,7 +69,11 @@ function createMapWithMarkers(){
             })
         });
       document.querySelector("#investorMap").classList.add("hidden");
+
     } 
+
+           
+    
    function initInvestorMarkerManagement(){
         investorMarkerManagement = (new InvestorMap.InvestorMarkerManagement()).init();
     }      
