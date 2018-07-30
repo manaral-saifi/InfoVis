@@ -16,6 +16,11 @@ SwitchCommands = (function(){
         return that;
     }
     
+    /*
+    after a select command is selected, this function checks which one it was and if it is already shown or not;
+    then it executes the fitting action (or does nothing if selected map is already visible)
+    */
+    
     function initSwitchCommands(){
         document.querySelector("#switchCommands").addEventListener("click", function(event){
             if(event.target.getAttribute("id") == "transferMapSwitch" && transferMapDOM.classList.contains("hidden")){
@@ -27,6 +32,12 @@ SwitchCommands = (function(){
             }
         });
     }
+    
+    /*
+    following three functions handle the action that fits to the pressed button;
+    first it checks which map was selected before, then it sets the views of the previous map to hidden and shows the views
+    of the selected map;
+    */
     
     function handleRankingChange(){
         if(transferMapDOM.classList.contains("hidden")){

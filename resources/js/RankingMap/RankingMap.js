@@ -28,6 +28,8 @@ var RankingMap = (function(){
         createMapWithMarkers();
     }
     
+    /**/
+    
     function createMapWithMarkers(){
         
         d3.csv(rankingURI, function(data){
@@ -41,6 +43,8 @@ var RankingMap = (function(){
         });
     }
     
+    /**/
+    
     function createMap(list) {
         d3.csv(lonLatURI, function(data){
             if(list[0].name == data[0].name){
@@ -53,6 +57,8 @@ var RankingMap = (function(){
             }
         });
     }
+    
+    /**/
     
     function createLeague(uri){
         rankingZoomManagement.resetMarkerSizes(markersDOMlist);
@@ -76,6 +82,8 @@ var RankingMap = (function(){
 
     }
     
+    /**/
+    
     function returnToTop50(){
         rankingZoomManagement.resetMarkerSizes(markersDOMlist);
             d3.csv(rankingURI, function(data){
@@ -93,7 +101,11 @@ var RankingMap = (function(){
             });
     }
     
-
+    /*here the map gets initialized with the lonLat values of the club in first place of SPI ratings;
+    a vectorLayer with borders of the countries gets added;
+    popup overlay also added, no interactions are allowed;
+    in the end, the zoom manager gets the map for adding his listeners (for zoom interaction via buttons)*/
+    
     function initMap(lonLat){
         var vectorLayer = new ol.layer.Vector({
             source: new ol.source.Vector({
@@ -123,7 +135,7 @@ var RankingMap = (function(){
     
     }
     
-    //Following functions initialize modules
+    //Following functions initialize modules for markers, zooms (to leagues or top50 view) and popups for club information
         
     function initRankingMarkerManagement(){
         rankingMarkerManagement = (new RankingMap.RankingMarkerManagement()).init();
