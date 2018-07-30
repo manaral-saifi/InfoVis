@@ -2,107 +2,90 @@ var InvestorMap = InvestorMap || {};
 
 InvestorMap.InvestorMarkerManagement = function() {
     
-    const europeNumberOne = "Bayern Munich";
-    const rankingURI = "./data/spi_global_rankings.csv";
-    const lonLatURI = "./data/club_lonlat.csv";
+    const connectionURI = "./data/connection_lonlat.csv";
 
     var that = {},
-        selectedHeight,
-        selectedWidth;
+        highestInvestment;
     
     function init(){
         return that;
     }
-    
-    function initCenterMarker(map, lonLat){
-         
-        var newDiv = document.createElement("div");
-        
-        newDiv.setAttribute("id", europeNumberOne);
-        newDiv.className = "marker";
-        newDiv.style.height = "33px";
-        newDiv.style.width = "33px";
-        document.getElementById("markers").appendChild(newDiv);
-    
-        var pos = ol.proj.fromLonLat(lonLat),
-            marker = new ol.Overlay({
-                position: pos,
-                positioning: 'center-center',
-                element: document.getElementById(europeNumberOne),
-                stopEvent: false,
-            });
-        
-        d3.csv(rankingURI, function(data){
-            document.getElementById(europeNumberOne).style.backgroundImage = "url('./images/" + data[0].name + ".png')";
-        });
-    
-        map.addOverlay(marker);
-    
-    }
 
-    function addEuropeMarkers(map, list){        
-           d3.csv(lonLatURI, function(data){
-               for(let i = 1; i < 50; i++){
-                   if(list[i].name == data[i].name){
-                       addAnotherMarker(investorMap, [Number(data[i].lon),Number(data[i].lat)],data[i].name,i,rankingURI);
-                   }
+    function addMarkers(map, list){
+        highestInvestment = getHighestInvestment(list);
+           d3.csv(connectionURI, function(data){
+               for(let i = 0; i < data.length; i++){
+                   addAnotherMarker(map, [Number(data[i].lonClub),Number(data[i].latClub)],list[i].name);
+                   createLineToInvestor(map, data[i], list[i].investment);
                }
            });
     }
 
-    function addAnotherMarker(map, lonLat, id, place, uri){
-        if(document.getElementById(id) == undefined){
+    function addAnotherMarker(map, lonLat, id){
+        if(document.getElementById(id + "Investor") == undefined){
             var pos = ol.proj.fromLonLat(lonLat),
                 newDiv = document.createElement("div");
 
-            newDiv.setAttribute("id", id);
+            newDiv.setAttribute("id", id + "Investor");
             newDiv.className = "marker";
             newDiv.style.height = "33px";
             newDiv.style.width = "33px";
-            document.getElementById("markers").appendChild(newDiv);
+            document.getElementById("markersInvestor").appendChild(newDiv);
 
             var marker = new ol.Overlay({
                 position: pos,
                 positioning: 'center-center',
-                element: document.getElementById(id),
+                element: document.getElementById(id + "Investor"),
                 stopEvent: false
             });
-
-            d3.csv(uri, function(data){
-                document.getElementById(id).style.backgroundImage = "url('./images/" + data[place].name + ".png')"; 
-            });
-
+            
             map.addOverlay(marker);
+            
+            document.getElementById(id + "Investor").style.backgroundImage = "url('./images/" + id + ".png')";
+
         }
     }
     
-    function attachMarkerListeners(markersDOMList){
-        markersDOMList.addEventListener("mouseover", function(event){
-            selectedHeight = event.target.style.height;
-            selectedWidth = event.target.style.width;
-            event.target.style.height = increaseMarkerSize()[0];
-            event.target.style.width = increaseMarkerSize()[1];
-            event.target.style.position = "relative";
-            event.target.style.zIndex = 1;
+    function createLineToInvestor(map, lonLatInfo, investment){
+        var clubLonlat = ol.proj.fromLonLat([Number(lonLatInfo.lonClub), Number(lonLatInfo.latClub)]),
+            countryLonLat = ol.proj.fromLonLat([Number(lonLatInfo.lonCountry), Number(lonLatInfo.latCountry)]);
+      
+        var lineStyle = [
+				new ol.style.Style({
+				  stroke: new ol.style.Stroke({
+					color: [0,0,(investment/highestInvestment) * 255,0.8],
+					width: ((investment/highestInvestment) * 2) + 1 
+				  })
+				})
+			  ];
+			  			
+        var line = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                features: [new ol.Feature({
+                    geometry: new ol.geom.LineString([clubLonlat, countryLonLat]),
+                    name: 'Line',
+                })]
+            })
         });
-        markersDOMList.addEventListener("mouseout", function(event){
-            event.target.style.height = selectedHeight;
-            event.target.style.width = selectedWidth;
-            event.target.style.zIndex = 0;
-        });
+
+        line.setStyle(lineStyle);
+        map.addLayer(line);
     }
     
-    function increaseMarkerSize(){
-        var currentHeight = Number(selectedHeight.substring(0, selectedHeight.indexOf('p'))),
-            currentWidth = Number(selectedHeight.substring(0, selectedWidth.indexOf('p')));
-        return [(currentHeight + 7) + "px",(currentWidth + 7) + "px"];
+    function getHighestInvestment(list){
+        var highestInvestment = 0;
+        
+        for(let i = 0; i < list.length; i++){
+            if(highestInvestment < list[i].investment){
+                highestInvestment = list[i].investment;
+            }
+        }
+        
+        return highestInvestment;
     }
         
     that.init = init;
-    that.initCenterMarker = initCenterMarker;
-    that.addEuropeMarkers = addEuropeMarkers;
-    that.addAnotherMarker = addAnotherMarker;
-    that.attachMarkerListeners = attachMarkerListeners;
+    that.addMarkers = addMarkers;
     
     return that;
 };

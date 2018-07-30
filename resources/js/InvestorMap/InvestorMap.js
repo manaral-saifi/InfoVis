@@ -5,46 +5,36 @@ var InvestorMap = (function(){
 
     var that = {},
         investorMap,
-        selectedWidth,
-        investorMarkerManagement,
-        markersDOMlist;
+        investorMarkerManagement;
     
     const investorsURI = "./data/club_investors.csv"
-    const lonLatURI = "./data/club_lonlat.csv"
-    const rankingURI = "./data/spi_global_rankings.csv";
-    const connectionURI = "./data/connection_lonlat.csv"
     
     function init(){
         initInvestorMarkerManagement()
         createMapWithMarkers();
+        return that;
     }
     
-function createMapWithMarkers(){
+    function createMapWithMarkers(){
         
-        d3.csv(rankingURI, function(data){
-            var list = [];
-            for(let i = 0; i < data.length; i++){
-                list.push({"name":null,"league":null});
-                list[i].name = data[i].name;
-                list[i].league = data[i].league;
-            }
-            createMap(list);
-        });
+            d3.csv(investorsURI, function(invData){
+                var list = [];
+                for(let j = 0; j < invData.length; j++){
+                            list.push({"name":null,"investment":null,"investor":null});
+                            list[j].name = invData[j].club;
+                            list[j].investment = invData[j].investment;
+                            list[j].investor = invData[j].investor;
+                }
+                createMap(list);
+            });
     }
     
     function createMap(list) {
-        d3.csv(lonLatURI, function(data){
-            if(list[0].name == data[0].name){
-                initMap([Number(data[0].lon),Number(data[0].lat)]);
-                investorMarkerManagement.initCenterMarker(investorMap, [Number(data[0].lon),Number(data[0].lat)]);
-                markersDOMlist = document.querySelector(".investorMap").children[0].children[1];
-                investorMarkerManagement.addEuropeMarkers(investorMap, list);
-                investorMarkerManagement.attachMarkerListeners(markersDOMlist);
-            }
-        });
+            initMap();
+            investorMarkerManagement.addMarkers(investorMap, list);
     }     
     
-  function initMap(lonLat){
+  function initMap(){
         var vectorLayer = new ol.layer.Vector({
             source: new ol.source.Vector({
                 url: 'https://openlayers.org/en/v4.6.5/examples/data/geojson/countries.geojson',
@@ -55,8 +45,8 @@ function createMapWithMarkers(){
             target: 'investorMap',
             layers: [vectorLayer],
             view: new ol.View({
-                center: ol.proj.fromLonLat(lonLat),
-                zoom: 2.5
+                center: ol.proj.fromLonLat([11.62605618029147, 48.22014868029149]),
+                zoom: 4.8
             }),
             interactions: new ol.interaction.defaults({
                 doubleClickZoom :false,
@@ -69,7 +59,6 @@ function createMapWithMarkers(){
             })
         });
       document.querySelector("#investorMap").classList.add("hidden");
-
     } 
 
            

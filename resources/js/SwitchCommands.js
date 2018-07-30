@@ -2,7 +2,7 @@ SwitchCommands = (function(){
 
     const rankingMapDOM = document.querySelector("#map"),
           transferMapDOM = document.querySelector("#transferMap"),
-          investorMapDOM = document.querySelector("#investorMap")
+          investorMapDOM = document.querySelector("#investorMap"),
           rankingButtonsDOM = document.querySelector("#buttons"),
           transferButtonsDOM = document.querySelector("#transferButtons"),
           rankingText = document.querySelector(".ranking"),
@@ -22,52 +22,60 @@ SwitchCommands = (function(){
                 handleTransferChange();
             } else if(event.target.getAttribute("id") == "rankingMapSwitch" && rankingMapDOM.classList.contains("hidden")) {
                 handleRankingChange();
-            } else if(event.target.getAttribute("id") == "investorMapSwitch"){
+            } else if(event.target.getAttribute("id") == "investorMapSwitch" && investorMapDOM.classList.contains("hidden")){
                 handleInvestorChange();
             }
         });
     }
     
     function handleRankingChange(){
-        rankingMapDOM.classList.remove("hidden");
-        transferMapDOM.classList.add("hidden");                
-        rankingButtonsDOM.classList.remove("hidden");
-        transferButtonsDOM.classList.add("hidden");
-        investorMapDOM.classList.add("hidden");
-        if(investorText.classList.contains("hidden")){
-            transferText.classList.add("hidden");
-        } else {
+        if(transferMapDOM.classList.contains("hidden")){
+            rankingMapDOM.classList.remove("hidden");                
+            rankingButtonsDOM.classList.remove("hidden");
+            rankingText.classList.remove("hidden");
+            investorMapDOM.classList.add("hidden");
             investorText.classList.add("hidden");
+        } else {
+            rankingMapDOM.classList.remove("hidden");                
+            rankingButtonsDOM.classList.remove("hidden");
+            rankingText.classList.remove("hidden");
+            transferMapDOM.classList.add("hidden");
+            transferText.classList.add("hidden");
+            transferButtonsDOM.classList.add("hidden");
         }
-        rankingText.classList.remove("hidden");
     }
     
     function handleTransferChange(){
-        rankingMapDOM.classList.add("hidden");
-        transferMapDOM.classList.remove("hidden");
-        rankingButtonsDOM.classList.add("hidden");
-        transferButtonsDOM.classList.remove("hidden");
-        investorMapDOM.classList.add("hidden");
-        if(investorText.classList.contains("hidden")){
-            rankingText.classList.add("hidden");
-        } else {
+        if(rankingMapDOM.classList.contains("hidden")){
+            transferMapDOM.classList.remove("hidden");                
+            transferButtonsDOM.classList.remove("hidden");
+            transferText.classList.remove("hidden");
+            investorMapDOM.classList.add("hidden");
             investorText.classList.add("hidden");
+        } else {
+            transferMapDOM.classList.remove("hidden");                
+            transferButtonsDOM.classList.remove("hidden");
+            transferText.classList.remove("hidden");
+            rankingMapDOM.classList.add("hidden");
+            rankingButtonsDOM.classList.add("hidden");
+            rankingText.classList.add("hidden");
         }
-        transferText.classList.remove("hidden");
     }
     
     function handleInvestorChange(){
-        rankingMapDOM.classList.add("hidden");
-        transferMapDOM.classList.add("hidden");
-        rankingButtonsDOM.classList.add("hidden");
-        transferButtonsDOM.classList.add("hidden");
-        investorMapDOM.classList.remove("hidden");
-         if(transferText.classList.contains("hidden")){
-            rankingText.classList.add("hidden");
+        if(rankingMapDOM.classList.contains("hidden")){
+            investorMapDOM.classList.remove("hidden");                
+            investorText.classList.remove("hidden");
+            transferMapDOM.classList.add("hidden");
+            transferButtonsDOM.classList.add("hidden");
+            transferText.classList.add("hidden");
         } else {
-             transferText.classList.add("hidden");
+            investorMapDOM.classList.remove("hidden");                
+            investorText.classList.remove("hidden");
+            rankingMapDOM.classList.add("hidden");
+            rankingButtonsDOM.classList.add("hidden");
+            rankingText.classList.add("hidden");
         }
-        investorText.classList.remove("hidden");
     }
     
     that.init = init;

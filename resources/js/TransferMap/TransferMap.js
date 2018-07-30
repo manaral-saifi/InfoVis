@@ -2,7 +2,7 @@ var d3 = d3 || {};
 
 TransferMap = (function(){
 
-    const transfersURI = "./data/transfers_test.csv",
+    const transfersURI = "./data/transfers5000.csv",
           translationURI = "./data/country_translation.csv";
     
     var that = {},
@@ -14,6 +14,11 @@ TransferMap = (function(){
         initMap();
         return that;
     }
+    
+    /*
+    initially creates the transferMap and hides it at the start of the program (since rankingMap is first)
+    then fills it via coloring with the initial state (the "from" data)
+    */
     
     function initMap(){
         var vectorLayer = new ol.layer.Vector({
@@ -43,6 +48,12 @@ TransferMap = (function(){
         initTransferVisualization();
     }
     
+    /*
+    creates an array with the important information about the transfer dataset
+    then creates a prepared countList for "from" and "to" and initially creates the map view with the "from" countList
+    both lists are given to the initialization of the button listeners
+    */
+    
     function initTransferVisualization(){
         d3.csv(transfersURI, function(data){
             var list = [];
@@ -63,6 +74,10 @@ TransferMap = (function(){
         });
     }
     
+    /*
+    sets the listeners for the two main buttons in the transferMap view
+    */
+    
     function setButtonListeners(preparedFromCountList, preparedToCountList){
         document.querySelector("#transferButtons").addEventListener("click", function(event){
             if(event.target.getAttribute("id") == "fromButton" && toSelected){
@@ -73,6 +88,12 @@ TransferMap = (function(){
             }
         });
     }
+    
+    /*
+    following two functions define the action of using the "from" and the "to" buttons
+    the pressed button gets a black color (showing "currently pressed")
+    the current vector gets removed, and the corresponding one gets created (and added to the map in the end)
+    */
     
     function handleFromButtonPressed(preparedFromCountList){
         toSelected = false;
@@ -94,6 +115,10 @@ TransferMap = (function(){
         createTransferVector(preparedToCountList);
     }
     
+    /*
+    after the final prepared countList is generated and the vectorArray filled, the transferMap finally receives the colorings
+    */
+    
     function createTransferVector(countList){
         d3.csv(translationURI, function(data){
             var translatedArray = [];
@@ -104,6 +129,12 @@ TransferMap = (function(){
             }
         });
     }
+    
+    /*
+    fills the vector array with the different colorings of the countries
+    the algorithm to determine the value (only red value, 0 for yellow and blue) divides the countries count through the highest count
+    and multiplies it with 255 -> so the biggest count has the brightest red, and the lowest counts are close to black
+    */
     
     function fillVectorArray(translatedArray){
         vectorArray = [];
@@ -117,7 +148,7 @@ TransferMap = (function(){
                 if(feature.get("name") == translatedArray[i].country){
                     return new ol.style.Style({
                         fill: new ol.style.Fill({
-                            color: [translatedArray[i].count,0,0,0.7],
+                            color: [(translatedArray[i].count/getHighestCount(translatedArray))*255,0,0,0.7],
                         })
                     });
                 }
@@ -126,6 +157,13 @@ TransferMap = (function(){
             vectorArray.push(vector);
         }
     }
+    
+    /*
+    translates the german country names to the accurate english ones (because countries in openlayers need to be in english)
+    also in openlayers some countries are joined to one term (Wales and Scotland are United Kingdom as well)
+    in the end, the resulting duplicates are taken out (getDoublesOut())
+    returns the final prepared countList
+    */
     
     function getTranslatedArray(countList, data){
         var translatedArray = [];
@@ -140,14 +178,19 @@ TransferMap = (function(){
         return translatedArray;
     }
     
+    /*
+    this function takes the duplicates of countries out and sums up their different count values
+    returns updated countList in the end
+    */
+    
     function getDoublesOut(translatedArray){
         var newTranslatedArray = [],
             namesList = [];
         for(let i = 0; i < translatedArray.length; i++){
             if(namesList.indexOf(translatedArray[i].country) != -1){
                 for(let j = 0; j < newTranslatedArray.length; j++){
-                    if(namesList.indexOf(translatedArray[i]) == newTranslatedArray[j]){
-                        translatedArray.count = translatedArray.count + translatedArray[i].count;
+                    if(namesList[namesList.indexOf(translatedArray[i].country)] == newTranslatedArray[j].country){
+                        newTranslatedArray[j].count = newTranslatedArray[j].count + translatedArray[i].count;
                     }
                 }
             } else {
@@ -157,6 +200,12 @@ TransferMap = (function(){
         }
         return newTranslatedArray;
     }
+    
+    /*
+    takes the list with the data of the csv file (as an array) 
+    and creates the list of countries with their corresponding counts of new additions
+    returns that list of (country, count) pairs
+    */
     
     function createFromCountList(list){
         var fromList = [],
@@ -176,6 +225,12 @@ TransferMap = (function(){
         return countList;
     }
 
+    /*
+    takes the list with the data of the csv file (as an array) 
+    and creates the list of countries with their corresponding counts of departures
+    returns that list of (country, count) pairs
+    */
+    
     function createToCountList(list){
         var toList = [],
             countList = [];
@@ -194,6 +249,12 @@ TransferMap = (function(){
         return countList;
     }
 
+    /*
+    takes out the countries where the count of departures (or new additions) is lower than 5  (of the countList)
+    returns the prepared countList; this is for filtering out the less relevant countries and also for taking out the mistakes
+    that the getCountryOfTransfersDatasetString brings with it
+    */
+    
     function prepareCountList(countList){
         var preparedCountList = [];
         for(let i = 0; i < countList.length; i++){
@@ -204,11 +265,30 @@ TransferMap = (function(){
         return preparedCountList;
     }
 
+    /*
+    gets a "from" or "to" string of the transfers dataset and attempts to filter out the country and return it
+    (does it pretty well for a majority of the strings that come in, only little amount of outliers)
+    */
+    
     function getCountryOfTransfersDatasetString(string){
         var process1 = string.substring(string.indexOf(")") + 1, string.length - 1),
             process2 = process1.substring(process1.indexOf(")") + 1, process1.length - 1),
             process3 = process2.substring(process2.indexOf(")") + 1, process2.length - 1);
         return process3.substring(0, process3.indexOf("(")).trim();
+    }
+    
+    /*
+    determines the highest count of the given countList (is needed for the calculation of the color distribution in fillVectorArray())
+    */
+    
+    function getHighestCount(countList){
+        highestCount = 0;
+        for(let i = 0; i < countList.length; i++){
+            if(highestCount < countList[i].count){
+                highestCount = countList[i].count;
+            }
+        }
+        return highestCount;
     }
     
     that.init = init;
