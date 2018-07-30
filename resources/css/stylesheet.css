@@ -1,7 +1,7 @@
 html, 
 body {
-    background-color: papayawhip;
-    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 h1,
@@ -21,9 +21,21 @@ footer {
     width: 100%;
 }
 
+.ranking {
+    font-family:fantasy;
+}
+
+.transfer {
+    font-family:fantasy;
+}
+
+.investor {
+    font-family:fantasy;
+}
+
 .spi {
     font-size: 130%;
-    font-family: fantasy;
+    font-family:cursive;
 }
 
 .map {
@@ -50,6 +62,7 @@ footer {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    color:chartreuse;
 }
 
 .ol-popup {
@@ -147,18 +160,21 @@ footer {
 
 #rankingMapSwitch {
     height: 40px;
-    width: 380px;
-    background-color: lightslategray;
+    width: 150px;
+    background-color:cadetblue;
+    border-radius: 50%;
 }
 
 #transferMapSwitch {
     height: 40px;
-    width: 380px;    
-    background-color: lightslategray;
+    width: 150px;
+    background-color:cadetblue;
+    border-radius: 50%;
 }
 
 #investorMapSwitch {
     height: 40px;
-    width: 380px;
-    background-color: lightslategray;
+    width: 150px;
+    background-color:cadetblue;
+    border-radius: 50%;
 }

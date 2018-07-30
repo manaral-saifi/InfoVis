@@ -34,6 +34,7 @@ RankingMap.RankingMarkerManagement = function() {
         
         d3.csv(rankingURI, function(data){
             document.getElementById(europeNumberOne).style.backgroundImage = "url('./images/" + data[0].name + ".png')";
+            document.getElementById(europeNumberOne).innerHTML = 1;
         });
     
         map.addOverlay(marker);
@@ -45,6 +46,7 @@ RankingMap.RankingMarkerManagement = function() {
                for(let i = 1; i < 50; i++){
                    if(list[i].name == data[i].name){
                        addAnotherMarker(map, [Number(data[i].lon),Number(data[i].lat)],data[i].name,i,rankingURI);
+                       document.getElementById(data[i].name).innerHTML = i+1;
                    }
                }
            });
