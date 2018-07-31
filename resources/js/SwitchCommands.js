@@ -1,7 +1,8 @@
 SwitchCommands = (function(){
 
     const rankingMapDOM = document.querySelector("#map"),
-          transferMapDOM = document.querySelector("#transferMap"),
+          transferFromMapDOM = document.querySelector("#transferFromMap"),
+          transferToMapDOM = document.querySelector("#transferToMap"),
           investorMapDOM = document.querySelector("#investorMap"),
           rankingButtonsDOM = document.querySelector("#buttons"),
           transferButtonsDOM = document.querySelector("#transferButtons"),
@@ -9,7 +10,8 @@ SwitchCommands = (function(){
           transferText = document.querySelector(".transfer"),
           investorText = document.querySelector(".investor");
     
-    var that = {};
+    var that = {},
+        toSelected = false;
     
     function init(){
         initSwitchCommands();
@@ -23,7 +25,7 @@ SwitchCommands = (function(){
     
     function initSwitchCommands(){
         document.querySelector("#switchCommands").addEventListener("click", function(event){
-            if(event.target.getAttribute("id") == "transferMapSwitch" && transferMapDOM.classList.contains("hidden")){
+            if(event.target.getAttribute("id") == "transferMapSwitch" && transferFromMapDOM.classList.contains("hidden") && transferToMapDOM.classList.contains("hidden")){
                 handleTransferChange();
             } else if(event.target.getAttribute("id") == "rankingMapSwitch" && rankingMapDOM.classList.contains("hidden")) {
                 handleRankingChange();
@@ -40,53 +42,85 @@ SwitchCommands = (function(){
     */
     
     function handleRankingChange(){
-        if(transferMapDOM.classList.contains("hidden")){
-            rankingMapDOM.classList.remove("hidden");                
-            rankingButtonsDOM.classList.remove("hidden");
-            rankingText.classList.remove("hidden");
-            investorMapDOM.classList.add("hidden");
-            investorText.classList.add("hidden");
+        if(transferFromMapDOM.classList.contains("hidden") && transferToMapDOM.classList.contains("hidden")){
+            makeRankingVisible();
+            hideInvestor();
         } else {
-            rankingMapDOM.classList.remove("hidden");                
-            rankingButtonsDOM.classList.remove("hidden");
-            rankingText.classList.remove("hidden");
-            transferMapDOM.classList.add("hidden");
-            transferText.classList.add("hidden");
-            transferButtonsDOM.classList.add("hidden");
+            makeRankingVisible();
+            hideTransfer();
         }
     }
     
     function handleTransferChange(){
         if(rankingMapDOM.classList.contains("hidden")){
-            transferMapDOM.classList.remove("hidden");                
-            transferButtonsDOM.classList.remove("hidden");
-            transferText.classList.remove("hidden");
-            investorMapDOM.classList.add("hidden");
-            investorText.classList.add("hidden");
+            makeTransferVisible();
+            hideInvestor();
         } else {
-            transferMapDOM.classList.remove("hidden");                
-            transferButtonsDOM.classList.remove("hidden");
-            transferText.classList.remove("hidden");
-            rankingMapDOM.classList.add("hidden");
-            rankingButtonsDOM.classList.add("hidden");
-            rankingText.classList.add("hidden");
+            makeTransferVisible();
+            hideRanking();
         }
     }
     
     function handleInvestorChange(){
         if(rankingMapDOM.classList.contains("hidden")){
-            investorMapDOM.classList.remove("hidden");                
-            investorText.classList.remove("hidden");
-            transferMapDOM.classList.add("hidden");
-            transferButtonsDOM.classList.add("hidden");
-            transferText.classList.add("hidden");
+            makeInvestorVisible();
+            hideTransfer();
         } else {
-            investorMapDOM.classList.remove("hidden");                
-            investorText.classList.remove("hidden");
-            rankingMapDOM.classList.add("hidden");
-            rankingButtonsDOM.classList.add("hidden");
-            rankingText.classList.add("hidden");
+            makeInvestorVisible();
+            hideRanking();
         }
+    }
+    
+    /*
+    following three functions define what happens when a certain map gets set visible (ranking, transfer or investor);
+    */
+    
+    function makeRankingVisible(){
+        rankingMapDOM.classList.remove("hidden");                
+        rankingButtonsDOM.classList.remove("hidden");
+        rankingText.classList.remove("hidden");
+    }
+    
+    function makeTransferVisible(){
+        if(!toSelected){
+            transferFromMapDOM.classList.remove("hidden");  
+        } else {
+            transferToMapDOM.classList.remove("hidden");
+        }
+        transferButtonsDOM.classList.remove("hidden");
+        transferText.classList.remove("hidden");
+    }
+    
+    function makeInvestorVisible(){
+        investorMapDOM.classList.remove("hidden");                
+        investorText.classList.remove("hidden");
+    }
+    
+    /*
+    following three functions define what happens when a certain map gets set hidden (ranking, transfer or investor);
+    */
+    
+    function hideRanking(){
+        rankingMapDOM.classList.add("hidden");
+        rankingButtonsDOM.classList.add("hidden");
+        rankingText.classList.add("hidden");
+    }
+    
+    function hideTransfer(){
+        if(transferFromMapDOM.classList.contains("hidden")){
+            transferToMapDOM.classList.add("hidden");
+            toSelected = true;
+        } else {
+            transferFromMapDOM.classList.add("hidden");
+            toSelected = false;
+        }
+        transferText.classList.add("hidden");
+        transferButtonsDOM.classList.add("hidden");
+    }
+    
+    function hideInvestor(){
+        investorMapDOM.classList.add("hidden");
+        investorText.classList.add("hidden");
     }
     
     that.init = init;
