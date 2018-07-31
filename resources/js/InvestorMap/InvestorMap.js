@@ -67,15 +67,15 @@ var InvestorMap = (function(){
             layers: [vectorLayer],
             view: new ol.View({
                 center: ol.proj.fromLonLat([11.62605618029147, 48.22014868029149]),
-                zoom: 4.8
+                zoom: 3
             }),
             overlays: [investorPopUp.getPopUpOverlay()],
             interactions: new ol.interaction.defaults({
                 doubleClickZoom :false,
-                dragAndDrop: false,
+                dragAndDrop: true,
                 keyboardPan: false,
                 keyboardZoom: false,
-                mouseWheelZoom: false,
+                mouseWheelZoom: true,
                 pointer: false,
                 select: false
             })
