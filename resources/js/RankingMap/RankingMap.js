@@ -10,8 +10,8 @@ var RankingMap = (function(){
         rankingMarkerManagement,
         markersDOMlist;
     
-    const lonLatURI = "./data/club_lonlat.csv";
-    const rankingURI = "./data/spi_global_rankings.csv";
+    const lonLatURI = "./data/club_lonlat.csv",
+          rankingURI = "./data/spi_global_rankings.csv";
 
     var myUri = {
         bundesligaURI : "./data/rankings/bundesliga_ranking_1718.csv",
@@ -28,10 +28,11 @@ var RankingMap = (function(){
         createMapWithMarkers();
     }
     
-    /**/
+    /*
+    fills an array with the important details about the SPI Top 50 teams and passes it to createMap();
+    */
     
     function createMapWithMarkers(){
-        
         d3.csv(rankingURI, function(data){
             var list = [];
             for(let i = 0; i < data.length; i++){
@@ -43,7 +44,11 @@ var RankingMap = (function(){
         });
     }
     
-    /**/
+    /*
+    creates the rankingMap by initializing the center marker (first place in SPI Ranking) and adding the other europe markers as well;
+    also the popups with the important information about the visible markers get initialized as well as the listeners that 
+    increase the markers when a cursor is over them;
+    */
     
     function createMap(list) {
         d3.csv(lonLatURI, function(data){
@@ -58,7 +63,11 @@ var RankingMap = (function(){
         });
     }
     
-    /**/
+    /*
+    takes the uri of a league dataset;
+    then creates the markers of the league that were not in the top 50 markers yet (or makes them visible if they already were created before);
+    in the end, it gives the markers their size resulting from their position in the league table;
+    */
     
     function createLeague(uri){
         rankingZoomManagement.resetMarkerSizes(markersDOMlist);
@@ -82,7 +91,10 @@ var RankingMap = (function(){
 
     }
     
-    /**/
+    /*
+    firstly resets the sizes of the markers to their initial widths and heights;
+    then makes every marker of the top 50 visible and every non-"top 50" marker hidden; 
+    */
     
     function returnToTop50(){
         rankingZoomManagement.resetMarkerSizes(markersDOMlist);

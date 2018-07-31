@@ -22,6 +22,13 @@ RankingMap.RankingPopUp = function() {
         return that;
     }
     
+    /*
+    firstly this function finds the coordinates of the users click event;
+    after initializing a closer for the popups, the markersList in the DOM gets a onclick listener that initially checks which view is present (top 50 or league view?);
+    if it's the top 50 view, initTop50PopUp() gets called;
+    if it's the league view, the listener creates a popup that shows the important details of last season's table for the club (which was selected through clicking of the user) and sets it to the saved coordinates of the onclick event;
+    */
+    
     function initPopUps(map, markersDOMList, uriList){
         var coordinate;
         map.addEventListener("click", function(event){
@@ -69,6 +76,10 @@ RankingMap.RankingPopUp = function() {
     });
     }
     
+    /*
+    checks with the given leagueName which URI is needed (for displaying popup stats);
+    */
+    
     function getLeagueURIByEvent(leagueName){
             if(leagueName == "German Bundesliga"){
                 return "bundesligaURI";
@@ -83,6 +94,11 @@ RankingMap.RankingPopUp = function() {
             }
     }
     
+    /*
+    tries to find out the league name by comparing event's id and all names in the SPI dataset list;
+    after retrieving the right listEntry of the spiData array, the name of the league can easily be extracted;
+    */
+    
     function getLeagueName(event, spiData){
         var leagueName;
         for(let i = 0; i < spiData.length; i++){
@@ -92,6 +108,11 @@ RankingMap.RankingPopUp = function() {
         }
         return leagueName;
     }
+    
+    /*
+    initializes a popup in the top50 view;
+    every important information about the clubs SPI stats gets taken in account and is shown in the end via popup;
+    */
     
     function initTop50PopUp(event, coordinate){
         d3.csv(rankingURI, function(data){
@@ -112,6 +133,10 @@ RankingMap.RankingPopUp = function() {
                 });
     }
     
+    /*
+    checks if the current state of the map is the top 50 view by controlling if first created 50 markers don't contain class "hidden";
+    */
+    
     function isTop50View(markersDOMList){
         var markerCount = markersDOMList.childElementCount;
         for(let i = 0; i < 50; i++){
@@ -121,7 +146,11 @@ RankingMap.RankingPopUp = function() {
         }
         return true;
     }            
-                
+    
+    /*
+    returns the popup overlay for adding it to the (ranking) map in the main map module;
+    */
+    
     function getPopUpOverlay(){
         return overlay;
     }

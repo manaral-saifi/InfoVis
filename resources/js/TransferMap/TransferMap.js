@@ -3,11 +3,13 @@ var d3 = d3 || {};
 TransferMap = (function(){
 
     const transfersURI = "./data/transfers5000.csv",
-          translationURI = "./data/country_translation.csv";
+          translationURI = "./data/country_translation.csv",
+          center = [11.62605618029147, 48.22014868029149];
     
     var that = {},
         vectorArray,
-        transferMap,
+        transferFromMap,
+        transferToMap,
         toSelected = false;
     
     function init(){
@@ -16,8 +18,8 @@ TransferMap = (function(){
     }
     
     /*
-    initially creates the transferMap and hides it at the start of the program (since rankingMap is first)
-    then fills it via coloring with the initial state (the "from" data)
+    initially creates transferFromMap and transferToMap and hides them at the start of the program (since rankingMap is first)
+    then fills it via coloring with the initial state (the "from" and "to" data)
     */
     
     function initMap(){
@@ -27,11 +29,21 @@ TransferMap = (function(){
                 format: new ol.format.GeoJSON()
             }),
         });
-        transferMap = new ol.Map({
-            target: 'transferMap',
+        initTransferFromMap(vectorLayer);
+        initTransferToMap(vectorLayer);
+        document.querySelector("#transferFromMap").classList.add("hidden");
+        document.querySelector("#transferToMap").classList.add("hidden");
+        initTransferVisualization();
+    }
+    
+    /*following two functions initialize the maps for player departures and player additions*/
+    
+    function initTransferFromMap(vectorLayer){
+        transferFromMap = new ol.Map({
+            target: 'transferFromMap',
             layers: [vectorLayer],
             view: new ol.View({
-                center: ol.proj.fromLonLat([11.62605618029147, 48.22014868029149]),
+                center: ol.proj.fromLonLat(center),
                 zoom: 4.6
             }),
             interactions: new ol.interaction.defaults({
@@ -44,14 +56,32 @@ TransferMap = (function(){
                 select: false
             })
         });
-        document.querySelector("#transferMap").classList.add("hidden");
-        initTransferVisualization();
+    }
+    
+    function initTransferToMap(vectorLayer){
+        transferToMap = new ol.Map({
+            target: 'transferToMap',
+            layers: [vectorLayer],
+            view: new ol.View({
+                center: ol.proj.fromLonLat(center),
+                zoom: 4.6
+            }),
+            interactions: new ol.interaction.defaults({
+                doubleClickZoom :false,
+                dragAndDrop: false,
+                keyboardPan: false,
+                keyboardZoom: false,
+                mouseWheelZoom: false,
+                pointer: false,
+                select: false
+            })
+        });
     }
     
     /*
     creates an array with the important information about the transfer dataset
-    then creates a prepared countList for "from" and "to" and initially creates the map view with the "from" countList
-    both lists are given to the initialization of the button listeners
+    then creates a prepared countList for "from" and "to" and initially creates the two map views with the "from" and "to" countList
+    in the end, the initialization of the button listeners takes place
     */
     
     function initTransferVisualization(){
@@ -69,8 +99,9 @@ TransferMap = (function(){
                 preparedFromCountList = prepareCountList(countListFrom),
                 countListTo = createToCountList(list),
                 preparedToCountList = prepareCountList(countListTo);
-            createTransferVector(preparedFromCountList);
-            setButtonListeners(preparedFromCountList, preparedToCountList);
+            createTransferVector(preparedFromCountList, "from");
+            createTransferVector(preparedToCountList, "to");
+            setButtonListeners();
         });
     }
     
@@ -78,13 +109,12 @@ TransferMap = (function(){
     sets the listeners for the two main buttons in the transferMap view
     */
     
-    function setButtonListeners(preparedFromCountList, preparedToCountList){
+    function setButtonListeners(){
         document.querySelector("#transferButtons").addEventListener("click", function(event){
             if(event.target.getAttribute("id") == "fromButton" && toSelected){
-                handleFromButtonPressed(preparedFromCountList);
+                handleFromButtonPressed();
             } else if(event.target.getAttribute("id") == "toButton" && !toSelected){
-                handleToButtonPressed(preparedToCountList);
-
+                handleToButtonPressed();
             }
         });
     }
@@ -92,40 +122,42 @@ TransferMap = (function(){
     /*
     following two functions define the action of using the "from" and the "to" buttons
     the pressed button gets a black color (showing "currently pressed")
-    the current vector gets removed, and the corresponding one gets created (and added to the map in the end)
+    the current map gets hidden, and the other one gets visible
     */
     
-    function handleFromButtonPressed(preparedFromCountList){
+    function handleFromButtonPressed(){
         toSelected = false;
         document.querySelector("#toButton").classList.remove("chosen");
         document.querySelector("#fromButton").classList.add("chosen");
-        for(let i = 0; i < vectorArray.length; i++){
-            transferMap.removeLayer(vectorArray[i]);
-        }
-        createTransferVector(preparedFromCountList);
+        document.querySelector("#transferToMap").classList.add("hidden");
+        document.querySelector("#transferFromMap").classList.remove("hidden");
     }
     
-    function handleToButtonPressed(preparedToCountList){
+    function handleToButtonPressed(){
         toSelected = true;
         document.querySelector("#fromButton").classList.remove("chosen");
         document.querySelector("#toButton").classList.add("chosen");
-        for(let i = 0; i < vectorArray.length; i++){
-            transferMap.removeLayer(vectorArray[i]);
-        }
-        createTransferVector(preparedToCountList);
+        document.querySelector("#transferFromMap").classList.add("hidden");
+        document.querySelector("#transferToMap").classList.remove("hidden");
     }
     
     /*
-    after the final prepared countList is generated and the vectorArray filled, the transferMap finally receives the colorings
+    after the final prepared countList is generated and the vectorArray filled, the map finally receives the colorings
     */
     
-    function createTransferVector(countList){
+    function createTransferVector(countList, type){
         d3.csv(translationURI, function(data){
             var translatedArray = [];
             translatedArray = getTranslatedArray(countList, data);
             fillVectorArray(translatedArray);
-            for(let i = 0; i < vectorArray.length; i++){
-                transferMap.addLayer(vectorArray[i]);
+            if(type == "from"){
+                for(let i = 0; i < vectorArray.length; i++){
+                    transferFromMap.addLayer(vectorArray[i]);
+                }
+            } else if (type == "to"){
+                for(let i = 0; i < vectorArray.length; i++){
+                    transferToMap.addLayer(vectorArray[i]);
+                }
             }
         });
     }
