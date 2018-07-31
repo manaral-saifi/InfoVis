@@ -110,6 +110,7 @@ RankingMap.RankingZoomManagement = function(options) {
     /*
     following 5 functions firstly remove the coloring of the previously selected country and add the coloring for the new one;
     then an animation is started that brings the user to the center of the selected league (/country);
+    (inspirational source: http://openlayers.org/en/latest/examples/animation.html)
     */
     function showBundesliga(map){
         removeColorVector(map);

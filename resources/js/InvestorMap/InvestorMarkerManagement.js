@@ -1,3 +1,8 @@
+/*
+for everything about setting markers and their visualization, and example of the openlayers website has helped
+(inspirational source: https://openlayers.org/en/latest/examples/overlay.html)
+*/
+
 var InvestorMap = InvestorMap || {};
 
 InvestorMap.InvestorMarkerManagement = function() {
@@ -61,6 +66,7 @@ InvestorMap.InvestorMarkerManagement = function() {
     a line between a club and a country gets added to the given (investor) map;
     width and color of the lines is chosen according to the investment amount compared to the highest investment amount;
     higher width and more blue means more money; smaller width and more black means less money (compared to the others);
+    (inspirational source: https://jsfiddle.net/jdrucvqg/)
     */
     
     function createLineToInvestor(map, lonLatInfo, investment){

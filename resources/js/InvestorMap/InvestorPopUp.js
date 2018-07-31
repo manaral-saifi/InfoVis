@@ -1,3 +1,8 @@
+/*
+for everything about initializing and creating popups in fitting situations, an example of the openlayers website has helped
+(inspirational source: https://openlayers.org/en/latest/examples/popup.html)
+*/
+
 var InvestorMap = InvestorMap || {};
 
 InvestorMap.InvestorPopUp = function() {

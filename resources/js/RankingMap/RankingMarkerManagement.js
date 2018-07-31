@@ -1,3 +1,8 @@
+/*
+for everything about setting markers and their visualization, and example of the openlayers website has helped
+(inspirational source: https://openlayers.org/en/latest/examples/overlay.html)
+*/
+
 var RankingMap = RankingMap || {};
 
 RankingMap.RankingMarkerManagement = function() {

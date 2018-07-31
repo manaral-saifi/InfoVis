@@ -1,3 +1,8 @@
+/*
+everything about the openlayers map where no source is given, the API of OpenLayers is used 
+(source: https://openlayers.org/en/latest/apidoc/)
+*/
+
 var d3 = d3 || {};
 
 var RankingMap = (function(){
